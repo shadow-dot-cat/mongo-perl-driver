@@ -274,6 +274,9 @@ subtest 'ensure index arbitrary options' => sub {
 };
 
 subtest 'indexes w/ same key pattern but different collations' => sub {
+    plan skip_all => "Server version $server_version doesn't support collation"
+      unless $supports_collation;
+
     $coll->drop;
     $iv->create_one( { a => 1 }, { collation => $valid_collation, name => "index1" } );
     $iv->create_one( { a => 1 },
