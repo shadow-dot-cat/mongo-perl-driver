@@ -20,20 +20,24 @@ use Data::Dumper;
 
 ok(my $mongodb_deps = MongoDBTest::Deps->new, 'got deps manager object');
 
-like( my $main_cpanfile = $mongodb_deps->mymeta_cpanfile, qr{^/tmp},
-      'got main cpanfile' );
-ok( -r $main_cpanfile, 'main cpanfile exists' );
+subtest 'main deps' => sub {
+    like( my $main_cpanfile = $mongodb_deps->mymeta_cpanfile, qr{^/tmp},
+          'got main cpanfile' );
+    ok( -r $main_cpanfile, 'main cpanfile exists' );
 
-my @deep_xs = $mongodb_deps->has_deep_xs($main_cpanfile);
-ok(! scalar @deep_xs, 'check deep xs deps' )
-    or warn Dumper(\@deep_xs);
+    my @deep_xs = $mongodb_deps->has_deep_xs($main_cpanfile);
+    ok(! scalar @deep_xs, 'check deep xs deps' )
+        or warn Dumper(\@deep_xs);
+};
 
-like(my $devel_cpanfile = $mongodb_deps->devel_cpanfile, qr{/devel},
-     'got devel cpanfile');
-ok( -r $devel_cpanfile, 'devel cpanfile exists' );
+subtest 'devel deps' => sub {
+    like(my $devel_cpanfile = $mongodb_deps->devel_cpanfile, qr{/devel},
+         'got devel cpanfile');
+    ok( -r $devel_cpanfile, 'devel cpanfile exists' );
 
-@deep_xs = $mongodb_deps->has_deep_xs($devel_cpanfile);
-ok(! scalar @deep_xs, 'check deep xs deps' )
-    or warn Dumper(\@deep_xs);
+    my @deep_xs = $mongodb_deps->has_deep_xs($devel_cpanfile);
+    ok(! scalar @deep_xs, 'check deep xs deps' )
+        or warn Dumper(\@deep_xs);
+};
 
 done_testing;
