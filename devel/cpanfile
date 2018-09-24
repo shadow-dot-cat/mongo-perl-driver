@@ -17,3 +17,5 @@ requires "Version::Next";
 requires "YAML::XS" => 0.67;
 requires "namespace::clean";
 requires "version";
+requires "CPAN::Meta";
+requires "Carton";
