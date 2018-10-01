@@ -35,10 +35,18 @@ sub _get_mymeta {
     return $meta if $meta;
 }
 
+sub _find_all_prereqs {
+    my ($self, $meta) = @_;
+    my $prereqs = $meta->effective_prereqs;
+    return {
+      runtime => { requires => $prereqs->merged_requirements->as_string_hash }
+    };
+}
+
 sub mymeta_cpanfile {
     my ($self) = @_;
     my $meta = $self->_get_mymeta or die "Could not locate any META files\n";
-    my $cpanfile = Module::CPANfile->from_prereqs( $meta->prereqs );
+    my $cpanfile = Module::CPANfile->from_prereqs( $self->_find_all_prereqs($meta) );
     my $tmpfile = File::Temp->new( UNLINK => 0 );
     print $tmpfile $cpanfile->to_string;
     return $tmpfile->filename;
