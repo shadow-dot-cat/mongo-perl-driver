@@ -45,8 +45,11 @@ sub _get_mymeta {
 sub _find_all_prereqs {
     my ($self, $meta) = @_;
     my $prereqs = $meta->effective_prereqs;
+    my $phases = [qw/runtime build configure test/];
     return {
-      runtime => { requires => $prereqs->merged_requirements->as_string_hash }
+        runtime => {
+            requires => $prereqs->merged_requirements($phases)->as_string_hash
+        },
     };
 }
 
