@@ -1,4 +1,4 @@
-#  Copyright 2014 - present MongoDB, Inc.
+#  Copyright 2018 - present MongoDB, Inc.
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -27,6 +27,13 @@ use File::Temp ();
 use Cwd ();
 use Carton::CLI;
 
+has _tmp_file => (
+    is => 'ro', lazy => 1,
+    builder => '_build_tmp_file',
+);
+
+sub _build_tmp_file { return File::Temp->new( UNLINK => 1 ) }
+
 sub _get_mymeta {
     my ($self) = @_;
     my $file = 'MYMETA.json';
@@ -47,16 +54,14 @@ sub mymeta_cpanfile {
     my ($self) = @_;
     my $meta = $self->_get_mymeta or die "Could not locate any META files\n";
     my $cpanfile = Module::CPANfile->from_prereqs( $self->_find_all_prereqs($meta) );
-    my $tmpfile = File::Temp->new( UNLINK => 0 );
+    my $tmpfile = $self->_tmp_file;
     print $tmpfile $cpanfile->to_string;
     return $tmpfile->filename;
 }
 
-sub devel_cpanfile { return Cwd::cwd() . '/devel/cpanfile' }
-
 sub has_deep_xs {
     my ($self, $cpanfile) = @_;
-    my $install_path = Cwd::cwd() . '/devel/local-lib';
+    my $install_path = Cwd::getcwd() . '/devel/local-lib';
     my $carton = Carton::CLI->new;
     $carton->run(
         'install',
@@ -70,7 +75,7 @@ sub has_deep_xs {
         push @deep_xs, $dist->distfile
             if $dist->distfile =~ /XS/;
     }
-    return @deep_xs;
+    return grep { $_ !~ /MaybeXS/ } @deep_xs;
 }
 
 1;
