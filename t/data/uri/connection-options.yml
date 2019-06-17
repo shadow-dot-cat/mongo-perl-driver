@@ -64,7 +64,7 @@ tests:
         hosts: ~
         auth: ~
         options: {}
-    - 
+    -
         description: "Invalid retryWrites causes a warning"
         uri: "mongodb://example.com/?retryWrites=invalid"
         valid: true

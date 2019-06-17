@@ -11,7 +11,7 @@ tests:
             tlsCAFile: "ca.pem"
             tlsCertificateKeyFile: "cert.pem"
             tlsCertificateKeyFilePassword: "hunter2"
-    -  
+    -
         description: "Invalid tlsAllowInvalidCertificates causes a warning"
         uri: "mongodb://example.com/?tlsAllowInvalidCertificates=invalid"
         valid: true
@@ -28,7 +28,7 @@ tests:
         auth: ~
         options:
             tlsAllowInvalidCertificates: true
-    -  
+    -
         description: "Invalid tlsAllowInvalidCertificates causes a warning"
         uri: "mongodb://example.com/?tlsAllowInvalidCertificates=invalid"
         valid: true
@@ -45,7 +45,7 @@ tests:
         auth: ~
         options:
             tlsAllowInvalidHostnames: true
-    -  
+    -
         description: "Invalid tlsAllowInvalidHostnames causes a warning"
         uri: "mongodb://example.com/?tlsAllowInvalidHostnames=invalid"
         valid: true
@@ -62,7 +62,7 @@ tests:
         auth: ~
         options:
             tlsInsecure: true
-    -  
+    -
         description: "Invalid tlsAllowInsecure causes a warning"
         uri: "mongodb://example.com/?tlsAllowInsecure=invalid"
         valid: true

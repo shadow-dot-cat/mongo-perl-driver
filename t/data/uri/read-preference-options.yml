@@ -9,7 +9,7 @@ tests:
         options:
             readPreference: "primaryPreferred"
             readPreferenceTags:
-                - 
+                -
                     dc: "ny"
                     rack: "1"
                 -
@@ -39,4 +39,3 @@ tests:
         hosts: ~
         auth: ~
         options: {}
-

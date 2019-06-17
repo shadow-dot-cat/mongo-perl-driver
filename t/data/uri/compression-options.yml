@@ -7,7 +7,7 @@ tests:
         hosts: ~
         auth: ~
         options:
-            compressors: 
+            compressors:
               - "zlib"
             zlibCompressionLevel: 9
     -
@@ -45,4 +45,3 @@ tests:
         hosts: ~
         auth: ~
         options: {}
-

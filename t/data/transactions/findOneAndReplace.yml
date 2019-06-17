@@ -145,4 +145,3 @@ tests:
               w: majority
           command_name: commitTransaction
           database_name: admin
-
