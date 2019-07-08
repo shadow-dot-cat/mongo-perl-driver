@@ -1214,7 +1214,7 @@ sub aggregate {
     # string is OK so we check ref, not just exists
     __ixhash( $options, 'hint' ) if ref $options->{hint};
 
-    # read preferences are ignored if the last stage is $out
+    # read preferences are ignored if the last stage is $out or $merge
     my $last_op = '';
     # If $pipeline is an empty array, this can explode
     if ( scalar( @$pipeline ) > 0 ) { ($last_op) = keys %{ $pipeline->[-1] } };
@@ -1223,7 +1223,7 @@ sub aggregate {
         pipeline     => $pipeline,
         options      => $options,
         read_concern => $self->read_concern,
-        has_out      => $last_op eq '$out',
+        has_out      => !!($last_op =~ m/\$out|\$merge/),
         exists($options->{maxAwaitTimeMS})
             ? (maxAwaitTimeMS => delete $options->{maxAwaitTimeMS})
             : (),

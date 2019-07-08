@@ -224,8 +224,11 @@ sub test_aggregate_collection {
     my $is_out = exists $pipeline->[-1]{'$out'};
     return if $is_out && $server_version < v2.6.0;
 
+    my $is_merge = exists $pipeline->[-1]{'$merge'};
+    return if $is_merge && $server_version < v4.2.0;
+
     # Perl driver returns empty result if $out
-    $outcome->{result} = [] if $is_out;
+    $outcome->{result} = [] if $is_out || $is_merge;
 
     my $res = $coll->aggregate( grep { defined } $pipeline, $args );
     check_read_outcome( $label, $res, $outcome );
